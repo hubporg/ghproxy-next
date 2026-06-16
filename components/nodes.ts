@@ -67,4 +67,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "search", value: "ghproxy.monkeyray.net" },
   { label: "search", value: "gh.noki.icu" },
   { label: "search", value: "g.blfrp.cn" },
+  { label: "contribute", value: "githubdog.com" },
 ];
