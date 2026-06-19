@@ -71,4 +71,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "gh.meali.top" },
   { label: "contribute", value: "777.z321.cc.cd" },
   { label: "contribute", value: "gg.z321.cc.cd" },
+  { label: "contribute", value: "g.z321.cc.cd" },
 ];
