@@ -69,4 +69,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "search", value: "g.blfrp.cn" },
   { label: "contribute", value: "githubdog.com" },
   { label: "contribute", value: "gh.meali.top" },
+  { label: "contribute", value: "777.z321.cc.cd" },
 ];
