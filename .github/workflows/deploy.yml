@@ -1,0 +1,31 @@
+name: Build and Deploy
+
+# 向主干 main 分支推送代码时触发部署
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.11.0' # 选择适合的 Node.js 版本
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Build project
+        run: npm run build
+      
+      - name: Deploy to EdgeOne Makers
+        run: npx edgeone makers deploy <outputDirectory> -n <projectName> -t ${{ secrets.EDGEONE_API_TOKEN }} [-e <env>]
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
