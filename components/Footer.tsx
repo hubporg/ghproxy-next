@@ -219,7 +219,7 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
             <p>
-  © 2026 • <a href="https://www.hubp.org" style="color: #155DFC; text-decoration: none;">HubP</a> All rights reserved.
+  © 2026 • <a href="https://www.hubp.org" style={{color: '#155DFC', textDecoration: 'none'}}>HubP</a> All rights reserved.
 </p>
             <div className="flex flex-col sm:flex-row items-center gap-2">
               <a href="https://icp.gov.moe/?keyword=20251215" target="_blank" className="hover:text-gray-900 dark:hover:text-white transition-colors">萌ICP备20251215号</a>
