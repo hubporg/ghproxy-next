@@ -25,7 +25,7 @@ jobs:
       - name: Build project
         run: npm run build
       
-      - name: Deploy to EdgeOne Makers
-        run: npx edgeone makers deploy <outputDirectory> -n <projectName> -t ${{ secrets.EDGEONE_API_TOKEN }} [-e <env>]
+      - name: Deploy to EdgeOne Maker
+        run: npx edgeone makers deploy ./out -n ghproxy-next -t ${{ secrets.EDGEONE_API_TOKEN }}
         env:
           EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
