@@ -43,5 +43,5 @@ export const CLICK_RATE_WINDOW = 5 * 1000; // 1秒时间窗口（毫秒）
 export const LATENCY_TEST_TIMEOUT = 30000; // 调大超时时间到 30 秒，因为大文件下载可能需要更久
 export const LATENCY_SOURCE_API = 'api'; // 使用API提供的延迟
 export const LATENCY_SOURCE_CLIENT = 'client'; // 客户端检测延迟
-export const LATENCY_CACHE_DURATION = 5 * 60 * 1000; // 客户端检测结果缓存5分钟
-export const LATENCY_AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 自动刷新间隔5分钟
+export const LATENCY_CACHE_DURATION = 60 * 60 * 1000; // 客户端检测结果缓存1小时
+export const LATENCY_AUTO_REFRESH_INTERVAL = 60 * 60 * 1000; // 自动刷新间隔1小时

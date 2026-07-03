@@ -5,6 +5,7 @@
 // ============================================================
 import { ChevronDown, AlertCircle, Check, Gauge, Copy, ExternalLink, Loader2, RefreshCw } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import type { DomainNode, Release } from './types';
 import { PROXY_NODES } from './nodes';
 import { servicesConfig } from "@/config/services";
@@ -46,7 +47,17 @@ export default function MainContent({}: MainContentProps = {}) {
   const [isTestingLatency, setIsTestingLatency] = useState(false); // 是否正在检测延迟
   const [isTestingSpeed, setIsTestingSpeed] = useState(false); // 是否正在手动测速
   const [clickHistory, setClickHistory] = useState<number[]>([]); // 点击时间记录
-  
+
+  const [autoRedirectUrl, setAutoRedirectUrl] = useState<string | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [pendingNode, setPendingNode] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState(0);
+  const hasRedirectedRef = useRef(false);
+  const latencyTestTriggeredRef = useRef(false);
+  const redirectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -133,9 +144,9 @@ export default function MainContent({}: MainContentProps = {}) {
   }
 
   /**
-   * 获取标签颜色样式
+   * 获取单个标签的颜色样式
    */
-  function getLabelStyle(label: string): string {
+  function getSingleLabelStyle(label: string): string {
     switch(label) {
       case 'default':
         return 'text-blue-400 dark:text-blue-300';
@@ -146,6 +157,18 @@ export default function MainContent({}: MainContentProps = {}) {
       default:
         return 'text-gray-700 dark:text-gray-300';
     }
+  }
+
+  /**
+   * 渲染标签 JSX（多标签时各标签独立着色，外层 [] 包裹形成 [默认][贡献]）
+   */
+  function renderLabel(label: string | string[]): React.ReactNode {
+    const labels = Array.isArray(label) ? label : [label];
+    return labels.map((l, i) => (
+      <span key={i} className={getSingleLabelStyle(l)}>
+        [{getLabelText(l)}]
+      </span>
+    )).reduce((acc, el, i) => i === 0 ? [el] : [...acc, el], [] as React.ReactNode[]);
   }
 
   /**
@@ -478,12 +501,13 @@ export default function MainContent({}: MainContentProps = {}) {
     
     // 1. 初始检查：只在未尝试过且有节点为 '-' 时触发一次
     if (!initialTestAttempted.current) {
-      const hasUntested = domains.some(d => d.latency === '-');
-      if (hasUntested && !isTestingLatency) {
-        initialTestAttempted.current = true;
-        testAllNodesLatency(domains, 'latency');
+        const hasUntested = domains.some(d => d.latency === '-');
+        if (hasUntested && !isTestingLatency) {
+          initialTestAttempted.current = true;
+          latencyTestTriggeredRef.current = true;
+          testAllNodesLatency(domains, 'latency');
+        }
       }
-    }
 
     // 2. 设置稳定的 60s 定时器
     const interval = setInterval(() => {
@@ -534,6 +558,11 @@ export default function MainContent({}: MainContentProps = {}) {
     });
   }, []);
 
+  // 客户端挂载标记（用于 Portal 的 SSR 安全）
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // 保存节点选择到 localStorage
   useEffect(() => {
     if (selectedNode) {
@@ -546,7 +575,94 @@ export default function MainContent({}: MainContentProps = {}) {
     localStorage.setItem('fetchReleases', String(fetchReleases));
   }, [fetchReleases]);
 
+  // ============================================================
+  // URL 参数自动跳转
+  // ============================================================
 
+  // 解析 ?link= / ?url= 参数（使用 window.location.search 而非 useSearchParams，避免静态导出下 Suspense 挂起问题）
+  useEffect(() => {
+    if (!isMounted) return;
+    const params = new URLSearchParams(window.location.search);
+    const link = params.get('link') || params.get('url');
+    if (!link) return;
+    if (!validateGitHubUrl(link)) {
+      setInputError("URL 参数中的链接无效，请检查 ?link= 后的地址");
+      return;
+    }
+    if (isDownloadUrl(link)) {
+      // 下载类链接：自动测速并跳转最快节点
+      setAutoRedirectUrl(link);
+      setIsRedirecting(true);
+    } else {
+      // 非下载类链接（仓库主页/Issue/PR 等）：填入输入框供用户手动操作
+      setInputValue(link);
+    }
+  }, [isMounted]);
+
+  // 自动跳转核心逻辑：缓存优先，实时测速兜底；测速完成后进入 3 秒倒计时再跳转
+  useEffect(() => {
+    if (!autoRedirectUrl || hasRedirectedRef.current) return;
+    if (domains.length === 0 || isLoadingDomains) return;
+    if (pendingNode) return; // 已有倒计时在跑
+
+    const fastestNode = domains[0];
+    if (!fastestNode) return;
+
+    // 是否有缓存数据（fetchDomains 后立即可用，1 小时内有效）
+    const hasCachedData = domains.some(
+      d => d.latency !== '-' && d.latency !== 'timeout'
+    );
+
+    if (hasCachedData) {
+      // 缓存优先：进入 3 秒倒计时后跳转
+      startCountdown(fastestNode.value);
+    } else if (latencyTestTriggeredRef.current && !isTestingLatency) {
+      // 无缓存且测速已完成：进入 3 秒倒计时后跳转
+      startCountdown(fastestNode.value);
+    }
+    // 否则：无缓存且正在测速中，继续等待过渡页
+  }, [autoRedirectUrl, domains, isTestingLatency, isLoadingDomains, pendingNode]);
+
+  // 启动 3 秒倒计时，到时跳转
+  function startCountdown(nodeValue: string) {
+    if (countdownIntervalRef.current) {
+      clearInterval(countdownIntervalRef.current);
+    }
+    setPendingNode(nodeValue);
+    setCountdown(3);
+    countdownIntervalRef.current = setInterval(() => {
+      setCountdown(prev => {
+        if (prev <= 1) {
+          if (countdownIntervalRef.current) {
+            clearInterval(countdownIntervalRef.current);
+            countdownIntervalRef.current = null;
+          }
+          // 倒计时结束，跳转
+          if (autoRedirectUrl && !hasRedirectedRef.current) {
+            hasRedirectedRef.current = true;
+            const proxyUrl = getProxyUrlFor(autoRedirectUrl, nodeValue);
+            window.location.href = proxyUrl;
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }
+
+  // 超时降级：10 秒后用默认节点兜底启动倒计时跳转
+  useEffect(() => {
+    if (!autoRedirectUrl) return;
+    const timeoutId = setTimeout(() => {
+      if (!hasRedirectedRef.current && domains.length > 0 && !pendingNode) {
+        const fallback =
+          domains.find(d => d.value === 'gh.llkk.cc') || domains[0];
+        startCountdown(fallback.value);
+      }
+    }, 10000);
+    redirectTimeoutRef.current = timeoutId;
+    return () => clearTimeout(timeoutId);
+  }, [autoRedirectUrl, pendingNode]);
 
   // ============================================================
   // URL 校验与解析
@@ -558,6 +674,19 @@ export default function MainContent({}: MainContentProps = {}) {
     // GitHub URL 正则表达式 - 支持 GitHub 官方域名和常见镜像站（kkgithub.com）
     const githubRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)*(github(usercontent)?|kkgithub)\.com/i;
     return githubRegex.test(url);
+  }
+
+  // 判断是否为下载类链接（可直接代理下载/访问文件内容的 URL）
+  function isDownloadUrl(url: string): boolean {
+    const downloadPatterns = [
+      /\/releases\/download\//i,
+      /\/raw\//i,
+      /\/archive\//i,
+      /\/blob\//i,
+      /raw\.githubusercontent\.com/i,
+      /codeload\.github\.com/i,
+    ];
+    return downloadPatterns.some(p => p.test(url));
   }
 
   // 检查是否是 github.com 域名
@@ -840,6 +969,12 @@ export default function MainContent({}: MainContentProps = {}) {
     return `https://${selectedNode}/${normalizedUrl}`;
   }
 
+  // 生成代理链接（指定节点，不依赖 selectedNode state，避免污染用户偏好）
+  function getProxyUrlFor(url: string, nodeValue: string): string {
+    if (!url) return '';
+    const normalizedUrl = url.replace(/kkgithub\.com/gi, 'github.com');
+    return `https://${nodeValue}/${normalizedUrl}`;
+  }
   // 获取Tab内容
   function getTabContent() {
     // 如果输入框为空或校验失败，不生成内容
@@ -926,6 +1061,71 @@ export default function MainContent({}: MainContentProps = {}) {
   
   return (
     <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8">
+      {isMounted && autoRedirectUrl && (isRedirecting || pendingNode) && createPortal(
+        <div
+          role="dialog"
+          aria-modal="true"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 2147483647,
+            backgroundColor: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          className="dark:bg-gray-900"
+        >
+          <div className="text-center px-4 max-w-3xl">
+            <h1 className="font-bold mb-4 text-6xl">
+              Github <span className="text-blue-600">Proxy</span>
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 text-base">
+              支持 API、Git Clone、Releases、Archive、Gist、Raw 等资源加速下载，提升 GitHub 文件下载体验。
+            </p>
+            {pendingNode ? (
+              <>
+                <p className="text-gray-700 dark:text-gray-200 text-lg mt-8 mb-2">
+                  最快节点: <span className="font-semibold text-blue-600">{pendingNode}</span>
+                </p>
+                <p className="text-gray-600 dark:text-gray-300 text-base mb-4">
+                  <span className="text-2xl font-bold text-blue-600">{countdown}</span> 秒后自动跳转...
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (countdownIntervalRef.current) {
+                      clearInterval(countdownIntervalRef.current);
+                      countdownIntervalRef.current = null;
+                    }
+                    setPendingNode(null);
+                    setCountdown(0);
+                    setIsRedirecting(false);
+                    setAutoRedirectUrl(null);
+                    // 清除 URL 参数，让用户回到正常首页
+                    window.history.replaceState({}, '', window.location.pathname);
+                  }}
+                  className="mt-2 px-4 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                  取消跳转
+                </button>
+              </>
+            ) : (
+              <>
+                <Loader2 className="w-12 h-12 animate-spin mx-auto text-blue-500 mt-8 mb-4" />
+                <p className="text-gray-600 dark:text-gray-300 text-base">正在测速并跳转到最快节点...</p>
+              </>
+            )}
+            <p className="text-sm text-gray-400 mt-4 break-all">目标: {autoRedirectUrl}</p>
+          </div>
+        </div>,
+        document.body
+      )}
       <div className="w-full max-w-[1000px] mx-auto">
         {/* Container for content */}
         <div className="pt-40">
@@ -1003,10 +1203,10 @@ export default function MainContent({}: MainContentProps = {}) {
                     <div className="flex items-center gap-2 w-full">
                       {/* 标签 - 10% */}
                       <span
-                        className={`font-medium shrink-0 ${getLabelStyle(getSelectedNode().label)}`}
+                        className="font-medium shrink-0 flex items-center gap-1"
                         style={{ width: '10%', minWidth: '50px' }}
                       >
-                        [{getLabelText(getSelectedNode().label)}]
+                        {renderLabel(getSelectedNode().label)}
                       </span>
                       {/* Host - 60% */}
                       <span className="text-gray-700 dark:text-gray-300 truncate" style={{ width: '60%' }}>
@@ -1070,10 +1270,10 @@ export default function MainContent({}: MainContentProps = {}) {
                       <div className="flex items-center gap-2">
                         {/* 标签 - 10% */}
                         <span
-                          className={`font-medium shrink-0 ${getLabelStyle(domain.label)}`}
+                          className="font-medium shrink-0 flex items-center gap-1"
                           style={{ width: '10%', minWidth: '50px' }}
                         >
-                          [{getLabelText(domain.label)}]
+                          {renderLabel(domain.label)}
                         </span>
                         {/* Host - 60% */}
                         <span className="text-gray-700 dark:text-gray-300 truncate" style={{ width: '60%' }}>

@@ -6,7 +6,8 @@ import { DomainNode } from "./types";
  */
 export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "default", value: "gh.llkk.cc" },
-  { label: "contribute", value: "github.tbedu.top" },
+  { label: "contribute", value: "gh.dpik.top" },
+  { label: "contribute", value: "github.tbap.top" },
   { label: "contribute", value: "ghfile.geekertao.top" },
   { label: "contribute", value: "ghproxy.net" },
   { label: "contribute", value: "gh-proxy.com" },
@@ -23,7 +24,6 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "gh.felicity.ac.cn" },
   { label: "contribute", value: "gh.bugdey.us.kg" },
   { label: "contribute", value: "cdn.akaere.online" },
-  { label: "contribute", value: "gh.dpik.top" },
   { label: "contribute", value: "jiashu.1win.eu.org" },
   { label: "contribute", value: "tvv.tw" },
   { label: "contribute", value: "j.1win.ggff.net" },

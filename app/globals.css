@@ -131,3 +131,8 @@ html.dark .waline-container {
 .waline-container .wl-btn {
   border-radius: 0.375rem;
 }
+
+/* 强制隐藏 Waline RSS 订阅链接（保底样式，配合 noRss 配置） */
+.wl-rss {
+  display: none !important;
+}

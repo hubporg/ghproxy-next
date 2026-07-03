@@ -41,7 +41,7 @@ export default function Footer() {
             <ul className="flex gap-6 mt-8 list-none">
               <li>
                 <a
-                  href="#"
+                  href="https://github.com/hubporg"
                   rel="noopener"
                   target="_blank"
                   className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
@@ -52,7 +52,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="https://qm.qq.com/q/JWSV7CSGEs"
                   rel="noopener"
                   target="_blank"
                   className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
@@ -63,7 +63,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="mailto:hubp@hubp.org"
                   rel="noopener"
                   target="_blank"
                   className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
@@ -84,7 +84,7 @@ export default function Footer() {
                 <ul className="space-y-4 text-sm list-none">
                   <li>
                     <a
-                      href="#"
+                      href="/"
                       className="transition text-gray-500 dark:text-gray-400 hover:opacity-75"
                     >
                       GitHub Proxy
@@ -100,7 +100,8 @@ export default function Footer() {
                   </li>
                   <li>
                     <a
-                      href="#"
+                      href="https://kms.akams.cn"
+                      target="_blank"
                       className="transition text-gray-500 dark:text-gray-400 hover:opacity-75"
                     >
                       KMS Activator

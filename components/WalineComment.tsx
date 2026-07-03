@@ -26,6 +26,11 @@ interface WalineCommentProps {
    * 默认为 zh-CN
    */
   lang?: string;
+  /**
+   * 是否隐藏 RSS 订阅链接
+   * 默认为 true（隐藏）
+   */
+  noRss?: boolean;
 }
 
 // ============================================================
@@ -35,10 +40,11 @@ interface WalineCommentProps {
  * Waline 评论组件
  * 支持深色模式自动切换
  */
-export default function WalineComment({ 
-  serverURL, 
-  path = "/", 
-  lang = "zh-CN" 
+export default function WalineComment({
+  serverURL,
+  path = "/",
+  lang = "zh-CN",
+  noRss = true
 }: WalineCommentProps) {
   const walineInstanceRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -95,7 +101,7 @@ export default function WalineComment({
         walineInstanceRef.current.destroy();
       }
     };
-  }, [serverURL, path, lang]);
+  }, [serverURL, path, lang, noRss]);
 
   return (
     <div 
