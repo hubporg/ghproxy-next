@@ -75,4 +75,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "js.jiangss.shop" },
   { label: "contribute", value: "gap.andyjin.website" },
   { label: "contribute", value: "gh.my-website.ccwu.cc" },
+  { label: "contribute", value: "github.ikgy.top" },
 ];
