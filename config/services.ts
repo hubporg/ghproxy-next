@@ -27,7 +27,6 @@ export const servicesConfig = {
   // 需要预连接的域名列表
   preconnect: [
     "https://cdn.akams.cn",
-    "https://gh.llkk.cc",
   ],
 
   // Waline 评论系统

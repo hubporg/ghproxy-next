@@ -57,6 +57,7 @@ export default function MainContent({}: MainContentProps = {}) {
   const latencyTestTriggeredRef = useRef(false);
   const redirectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const countdownIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isUserSelectedRef = useRef(false);
 
   const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -87,6 +88,30 @@ export default function MainContent({}: MainContentProps = {}) {
 
       return latencyA - latencyB; // 仅按延迟升序
     });
+  }
+
+  /**
+   * 选最优默认节点：
+   * 1. 若存在有效 speed（Mbps）结果，按 speed 降序取最高
+   * 2. 否则按 latency 升序取最低（sortDomains[0]）
+   */
+  function pickBestNode(list: DomainNode[]): DomainNode | undefined {
+    if (list.length === 0) return undefined;
+
+    const getSpeedValue = (s: string): number | null => {
+      if (!s || s === '-' || s === 'timeout') return null;
+      const m = s.match(/^([0-9.]+)/);
+      return m ? parseFloat(m[1]) : null;
+    };
+
+    const withSpeed = list.filter(d => getSpeedValue(d.speed) !== null);
+    if (withSpeed.length > 0) {
+      return [...withSpeed].sort(
+        (a, b) => (getSpeedValue(b.speed) as number) - (getSpeedValue(a.speed) as number)
+      )[0];
+    }
+
+    return sortDomains(list)[0];
   }
 
   /**
@@ -148,8 +173,6 @@ export default function MainContent({}: MainContentProps = {}) {
    */
   function getSingleLabelStyle(label: string): string {
     switch(label) {
-      case 'default':
-        return 'text-blue-400 dark:text-blue-300';
       case 'contribute':
         return 'text-violet-400 dark:text-violet-300';
       case 'search':
@@ -176,7 +199,6 @@ export default function MainContent({}: MainContentProps = {}) {
    */
   function getLabelText(label: string): string {
     switch(label) {
-      case 'default': return '默认';
       case 'contribute': return '贡献';
       case 'search': return '测绘';
       default: return label || '未知';
@@ -261,12 +283,16 @@ export default function MainContent({}: MainContentProps = {}) {
       return sortedList;
     } catch (error) {
       console.error('初始化节点列表失败:', error);
-      const fallbackDomains: DomainNode[] = [{
-        value: "gh.llkk.cc",
-        label: "default",
-        latency: "-",
-        speed: "-",
-      }];
+      const fallbackNode = PROXY_NODES[0];
+      const fallbackDomains: DomainNode[] = [];
+      if (fallbackNode?.value) {
+        fallbackDomains.push({
+          value: fallbackNode.value,
+          label: fallbackNode.label || 'contribute',
+          latency: "-",
+          speed: "-",
+        });
+      }
       setDomains(fallbackDomains);
       return fallbackDomains;
     } finally {
@@ -458,6 +484,13 @@ export default function MainContent({}: MainContentProps = {}) {
       });
       
       await Promise.all(promises);
+
+      // 测速完成后，若用户未主动选择节点，按速度优先、延迟次之策略选最优
+      if (!isUserSelectedRef.current) {
+        const best = pickBestNode(updatedNodes);
+        if (best) setSelectedNode(best.value);
+      }
+
       return updatedNodes;
     } finally {
       if (mode === 'latency') {
@@ -546,13 +579,15 @@ export default function MainContent({}: MainContentProps = {}) {
     // 异步获取节点列表
     fetchDomains().then((domainList) => {
       if (domainList.length > 0) {
-        // 优先使用 savedNode（如果存在）
         if (savedNode && domainList.some(d => d.value === savedNode)) {
+          // 用户之前主动选过该节点，保留偏好
           setSelectedNode(savedNode);
+          isUserSelectedRef.current = true;
         } else {
-          // 默认选择 gh.llkk.cc，如果不存在则使用第一个节点
-          const defaultNode = domainList.find(d => d.value === 'gh.llkk.cc');
-          setSelectedNode(defaultNode ? 'gh.llkk.cc' : domainList[0].value);
+          // 初次访问或保存的节点已失效：优先选速度最高，无测速结果则选延迟最低
+          const best = pickBestNode(domainList);
+          if (best) setSelectedNode(best.value);
+          isUserSelectedRef.current = false;
         }
       }
     });
@@ -605,7 +640,7 @@ export default function MainContent({}: MainContentProps = {}) {
     if (domains.length === 0 || isLoadingDomains) return;
     if (pendingNode) return; // 已有倒计时在跑
 
-    const fastestNode = domains[0];
+    const fastestNode = pickBestNode(domains);
     if (!fastestNode) return;
 
     // 是否有缓存数据（fetchDomains 后立即可用，1 小时内有效）
@@ -655,9 +690,9 @@ export default function MainContent({}: MainContentProps = {}) {
     if (!autoRedirectUrl) return;
     const timeoutId = setTimeout(() => {
       if (!hasRedirectedRef.current && domains.length > 0 && !pendingNode) {
-        const fallback =
-          domains.find(d => d.value === 'gh.llkk.cc') || domains[0];
-        startCountdown(fallback.value);
+        // 兜底用 pickBestNode：有测速结果选最快，否则选延迟最低
+        const fallback = pickBestNode(domains);
+        if (fallback) startCountdown(fallback.value);
       }
     }, 10000);
     redirectTimeoutRef.current = timeoutId;
@@ -1259,6 +1294,7 @@ export default function MainContent({}: MainContentProps = {}) {
                       type="button"
                       onClick={() => {
                         setSelectedNode(domain.value);
+                        isUserSelectedRef.current = true;
                         setShowDropdown(false);
                       }}
                       className={`w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0 ${

@@ -5,7 +5,6 @@ import { DomainNode } from "./types";
  * 方便后续通过工作流自动更新
  */
 export const PROXY_NODES: Partial<DomainNode>[] = [
-  { label: "default", value: "gh.llkk.cc" },
   { label: "contribute", value: "gh.dpik.top" },
   { label: "contribute", value: "github.tbap.top" },
   { label: "contribute", value: "ghfile.geekertao.top" },

@@ -101,7 +101,7 @@ export default function Header() {
           <div className="flex items-center space-x-8">
             <nav className="hidden md:flex space-x-8">
               <a
-                href="https://gh.llkk.cc/https://raw.githubusercontent.com/521xueweihan/GitHub520/refs/heads/main/hosts"
+                href="https://cdn.jsdelivr.net/gh/521xueweihan/GitHub520@main/hosts"
                 className="text-gray-600 dark:text-gray-100 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
               >
                 GitHub Host
