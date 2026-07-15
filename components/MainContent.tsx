@@ -1276,10 +1276,10 @@ export default function MainContent({}: MainContentProps = {}) {
                 {/* Custom Dropdown Menu - 限制显示 10 条，支持滚动 */}
                 {!isLoadingDomains && (
                   <div
-                    className={`absolute z-[9999] w-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl transition-all duration-300 origin-top ${
+                    className={`absolute z-[9999] w-full mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl transition-all duration-300 ${
                       showDropdown
-                        ? "opacity-100 scale-y-100"
-                        : "opacity-0 scale-y-0 max-h-0"
+                        ? "opacity-100"
+                        : "opacity-0 max-h-0"
                     }`}
                     style={{ 
                       position: 'absolute',
