@@ -2,7 +2,7 @@ name: Validate and Add Acceleration Node
 
 on:
   issues:
-    types: [opened, labeled]
+    types: [opened]
 
 jobs:
   validate-and-add-mirror:
