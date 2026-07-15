@@ -77,4 +77,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "github.ikgy.top" },
   { label: "contribute", value: "gh.07150721.xyz" },
   { label: "contribute", value: "cfgh.ikgy.top" },
+  { label: "contribute", value: "xsadwsd.kdns.fr" },
 ];
