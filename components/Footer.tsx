@@ -46,7 +46,7 @@ export default function Footer() {
                   target="_blank"
                   className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 >
-                  <span className="sr-only">Github</span>
+                  <span className="sr-only">GitHub</span>
                   <Github className="w-6 h-6" />
                 </a>
               </li>

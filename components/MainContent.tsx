@@ -1118,7 +1118,7 @@ export default function MainContent({}: MainContentProps = {}) {
         >
           <div className="text-center px-4 max-w-3xl">
             <h1 className="font-bold mb-4 text-6xl">
-              Github <span className="text-blue-600">Proxy</span>
+              GitHub <span className="text-blue-600">Proxy</span>
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-base">
               支持 API、Git Clone、Releases、Archive、Gist、Raw 等资源加速下载，提升 GitHub 文件下载体验。
@@ -1167,7 +1167,7 @@ export default function MainContent({}: MainContentProps = {}) {
           {/* Title Section */}
           <div className="text-center w-full mb-12">
             <h1 className="font-bold mb-4 text-6xl">
-              Github <span className="text-blue-600">Proxy</span>
+              GitHub <span className="text-blue-600">Proxy</span>
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-base">
               支持 API、Git Clone、Releases、Archive、Gist、Raw 等资源加速下载，提升 GitHub 文件下载体验。
@@ -1184,7 +1184,7 @@ export default function MainContent({}: MainContentProps = {}) {
                   type="text"
                   value={inputValue}
                   onChange={handleInputChange}
-                  placeholder="输入 Github 文件链接"
+                  placeholder="输入 GitHub 文件链接"
                   className={`w-full px-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border rounded-lg focus:outline-none focus:ring-2 transition-all placeholder:text-gray-500 h-[48px] ${
                     inputError
                       ? "border-red-500 focus:ring-red-500"
