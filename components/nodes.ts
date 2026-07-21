@@ -79,4 +79,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "cfgh.ikgy.top" },
   { label: "contribute", value: "xsadwsd.kdns.fr" },
   { label: "contribute", value: "gh.ruan.dpdns.org" },
+  { label: "contribute", value: "ghproxy.felicity.land" },
 ];
