@@ -1,15 +1,21 @@
 name: Build and Deploy
 
-# 向主干 main 分支推送代码时触发部署
+# Triggered by pushes to main, and by completion of the node-contribution workflow.
+# workflow_run is needed because a push made with GITHUB_TOKEN does not emit a push event.
 on:
   push:
     branches:
       - main
+  workflow_run:
+    workflows: ["Validate and Add Acceleration Node"]
+    types: [completed]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+    # Only deploy after a successful node-contribution run; plain push events are unaffected
+    if: ${{ github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
