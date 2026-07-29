@@ -82,4 +82,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "ghproxy.felicity.land" },
   { label: "contribute", value: "github.nswrz.cn" },
   { label: "contribute", value: "gh.zhai.edu.pl" },
+  { label: "contribute", value: "gh.qfmc0721.cc.cd" },
 ];
