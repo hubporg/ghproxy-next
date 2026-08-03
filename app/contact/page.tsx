@@ -109,10 +109,26 @@ export default function ContactPage() {
                 </p>
                 <div className="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-400">
                   <p>
-                    • 在 GitHub 仓库提交 Issue
+                    •{" "}
+                    <a
+                      href="https://github.com/hubporg/ghproxy-next/issues"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      在 GitHub 仓库提交 Issue
+                    </a>
                   </p>
                   <p>
-                    • 加入我们的社区讨论群组
+                    •{" "}
+                    <a
+                      href="https://qm.qq.com/q/JWSV7CSGEs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      加入我们的社区讨论群组
+                    </a>
                   </p>
                 </div>
               </div>
