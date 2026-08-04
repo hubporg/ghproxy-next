@@ -2,16 +2,18 @@ import { Github, Mail, MessageCircle, Scale } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-gray-200 dark:border-gray-800 mt-auto">
+    <footer className="border-t border-gray-200 dark:border-gray-800 mt-auto font-outfit">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-40 lg:justify-between lg:items-start">
           {/* Brand Section - 左侧区域 */}
           <div className="lg:flex-shrink-0">
             {/* Logo */}
             <div >
-              <h3 className="font-bold text-2xl">GitHub Proxy</h3>
+              <h3 className="font-bold text-2xl">
+                GitHub <span className="text-blue-600">Proxy</span>
+              </h3>
             </div>
-            
+
             {/* Description */}
             <p className="max-w-xs mt-4 text-sm leading-5 text-gray-500 dark:text-gray-400">
               支持 API、Git Clone、Releases、Archive、Gist、Raw 等资源下载加速，提升 GitHub 文件下载体验。
@@ -25,12 +27,7 @@ export default function Footer() {
               </p>
               <p className="max-w-xs mt-1 text-sm leading-5 text-gray-500 dark:text-gray-400">
                 本站所有内容均基于{" "}
-                <a
-                  href="https://opensource.org/license/mit"
-                  target="_blank"
-                  className="underline underline-offset-2 hover:text-blue-600 dark:hover:text-blue-400"
-                  rel="noreferrer"
-                >
+                <a className="underline underline-offset-2 hover:text-blue-600 dark:hover:text-blue-400" href="https://opensource.org/license/mit" target="_blank" rel="noreferrer">
                   MIT 开源协议
                 </a>
                 {" "}发布。
@@ -39,30 +36,15 @@ export default function Footer() {
 
             {/* Social Links */}
             <div className="flex gap-6 mt-8">
-              <a
-                href="https://github.com/hubporg"
-                rel="noopener"
-                target="_blank"
-                className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-              >
+              <a className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400" href="https://github.com/hubporg" target="_blank" rel="noreferrer">
                 <span className="sr-only">GitHub</span>
                 <Github className="w-6 h-6" />
               </a>
-              <a
-                href="https://qm.qq.com/q/JWSV7CSGEs"
-                rel="noopener"
-                target="_blank"
-                className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-              >
+              <a className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400" href="https://qm.qq.com/q/JWSV7CSGEs" target="_blank" rel="noreferrer">
                 <span className="sr-only">Telegram</span>
                 <MessageCircle className="w-6 h-6" />
               </a>
-              <a
-                href="mailto:hubp@hubp.org"
-                rel="noopener"
-                target="_blank"
-                className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-              >
+              <a className="transition text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400" href="mailto:hubp@hubp.org" rel="noopener" target="_blank">
                 <span className="sr-only">Email</span>
                 <Mail className="w-6 h-6" />
               </a>
@@ -75,23 +57,13 @@ export default function Footer() {
             <div>
               <p className="font-semibold dark:text-white">资源</p>
               <div className="mt-6 space-y-4 text-sm">
-                <a
-                  href="#"
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                >
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="#">
                   Docker Proxy
                 </a>
-                <a
-                  href="https://kms.akams.cn"
-                  target="_blank"
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                >
-                  KMS Activator
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="https://kms.akams.cn" target="_blank">
+                  KMS Activation
                 </a>
-                <a
-                  href="#"
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                >
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="#">
                   Docker Relay Service
                 </a>
               </div>
@@ -101,22 +73,13 @@ export default function Footer() {
             <div>
               <p className="font-semibold dark:text-white">法律</p>
               <div className="mt-6 space-y-4 text-sm">
-                <a
-                  href="/terms"
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                >
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="/terms">
                   服务条款
                 </a>
-                <a
-                  href="/privacy"
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                >
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="/privacy">
                   隐私政策
                 </a>
-                <a
-                  href="/disclaimer"
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                >
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="/disclaimer">
                   免责声明
                 </a>
               </div>
@@ -126,24 +89,13 @@ export default function Footer() {
             <div>
               <p className="font-semibold dark:text-white">联系</p>
               <div className="mt-6 space-y-4 text-sm">
-                <a
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                  href="/about"
-                >
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="/about">
                   关于项目
                 </a>
-                <a
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                  href="/contact"
-                >
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="/contact">
                   联系我们
                 </a>
-                <a
-                  className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75"
-                  href="https://github.com/hubporg/ghproxy-next/issues"
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="https://github.com/hubporg/ghproxy-next/issues" target="_blank" rel="noreferrer">
                   问题反馈
                 </a>
               </div>
@@ -154,13 +106,11 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-            <p>
-  © 2026 <a href="https://www.hubp.org" style={{color: '#155DFC', textDecoration: 'none'}}>hubp.org</a>. All rights reserved.
-</p>
+            <p> © 2026 <a style={{color: '#155DFC', textDecoration: 'none'}} href="https://www.hubp.org" target="_blank">hubp.org</a>. All rights reserved.</p>
             <div className="flex flex-col sm:flex-row items-center gap-2">
-              <a href="https://icp.gov.moe/?keyword=20251215" target="_blank" className="hover:text-gray-900 dark:hover:text-white transition-colors">萌ICP备20251215号</a>
+              <a className="hover:text-gray-900 dark:hover:text-white transition-colors" href="https://icp.felicity.land/?keyword=20251111" target="_blank" rel="noreferrer">幸ICP备20251111号</a>
               <span className="hidden sm:inline">|</span>
-              <a href="https://icp.felicity.land/?keyword=20251111" target="_blank" className="hover:text-gray-900 dark:hover:text-white transition-colors">幸ICP备20251111号</a>
+              <a className="hover:text-gray-900 dark:hover:text-white transition-colors" href="https://icp.gov.moe/?keyword=20251215" target="_blank" rel="noreferrer">萌ICP备20251215号</a>
             </div>
           </div>
         </div>

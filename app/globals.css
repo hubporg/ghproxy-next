@@ -39,6 +39,10 @@ body {
   }
 }
 
+@utility font-outfit {
+  font-family: var(--font-outfit), Arial, Helvetica, sans-serif;
+}
+
 /* ============================================================
  * Tailwind CSS 4 深色模式兼容性修复
  * 解决 dark: 变体被普通 utility 类覆盖的问题

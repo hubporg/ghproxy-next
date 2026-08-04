@@ -269,7 +269,11 @@ export default function AboutPage() {
                 <li>分享使用经验</li>
               </ul>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-                如果您想参与项目开发或有任何问题，请访问我们的 GitHub 仓库或通过
+                如果您想参与项目开发或有任何问题，请访问我们的
+                <a href="https://github.com/hubporg/ghproxy-next" className="text-blue-600 dark:text-blue-400 hover:underline mx-1">
+                  GitHub
+                </a>
+                仓库或通过
                 <a href="/contact" className="text-blue-600 dark:text-blue-400 hover:underline mx-1">
                   联系我们
                 </a>

@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
 import { preconnect } from "react-dom";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 import UmamiAnalytics from "@/components/UmamiAnalytics";
 import { siteConfig } from "@/config/site";
 import { servicesConfig } from "@/config/services";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -57,7 +63,7 @@ export default function RootLayout({
   });
 
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html lang="zh-CN" suppressHydrationWarning className={outfit.variable}>
       <body className="antialiased">
         {/* 结构化数据 (JSON-LD) */}
         <script

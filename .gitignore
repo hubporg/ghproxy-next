@@ -15,25 +15,25 @@ target/
 .gradle/
 build/
 
-# Node
-node_modules/
-
 # Environments
 .env
 .venv
 
+# production
+/build
+
 # reference
 reference/
 
-# Logs
-logs/
+# Node
+node_modules/
 
 # next.js
 /.next/
 /out/
 
-# production
-/build
-
 # vercel
 .vercel
+
+docs/
+logs/

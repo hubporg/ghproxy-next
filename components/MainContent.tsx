@@ -1,8 +1,5 @@
 "use client";
 
-// ============================================================
-// Imports
-// ============================================================
 import { ChevronDown, AlertCircle, Check, Gauge, Copy, ExternalLink, Loader2, RefreshCw } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -1117,7 +1114,7 @@ export default function MainContent({}: MainContentProps = {}) {
           className="dark:bg-gray-900"
         >
           <div className="text-center px-4 max-w-3xl">
-            <h1 className="font-bold mb-4 text-6xl">
+            <h1 className="font-bold mb-4 text-6xl font-outfit">
               GitHub <span className="text-blue-600">Proxy</span>
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-base">
@@ -1166,7 +1163,7 @@ export default function MainContent({}: MainContentProps = {}) {
         <div className="pt-40">
           {/* Title Section */}
           <div className="text-center w-full mb-12">
-            <h1 className="font-bold mb-4 text-6xl">
+            <h1 className="font-bold mb-4 text-6xl font-outfit">
               GitHub <span className="text-blue-600">Proxy</span>
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-base">
