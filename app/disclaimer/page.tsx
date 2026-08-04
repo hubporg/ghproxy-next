@@ -310,9 +310,21 @@ export default function Disclaimer() {
                   如果您对本免责声明有任何疑问，请通过以下方式联系我们：
                 </p>
                 <ul className="list-disc list-inside ml-4 space-y-2">
-                  <li>通过 GitHub Issues 提交问题</li>
-                  <li>发送邮件至项目维护者</li>
-                  <li>加入我们的社区讨论</li>
+                  <li>
+                    <a className="text-blue-600 dark:text-blue-400 hover:underline" href="https://github.com/hubporg/ghproxy-next/issues" target="_blank" rel="noreferrer">
+                      通过 GitHub Issues 提交问题
+                    </a>
+                  </li>
+                  <li>
+                    <a className="text-blue-600 dark:text-blue-400 hover:underline" href="/contact">
+                      发送邮件至项目维护者
+                    </a>
+                  </li>
+                  <li>
+                    <a className="text-blue-600 dark:text-blue-400 hover:underline" href="https://qm.qq.com/q/JWSV7CSGEs" target="_blank" rel="noreferrer">
+                      加入我们的社区讨论
+                    </a>
+                  </li>
                 </ul>
               </div>
             </section>

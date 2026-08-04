@@ -16,7 +16,6 @@ export default function TermsOfService() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      
       <main className="flex-1 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* 页面标题 */}
@@ -171,9 +170,34 @@ export default function TermsOfService() {
                   如果您对本服务条款有任何疑问，请通过以下方式联系我们：
                 </p>
                 <ul className="list-disc list-inside ml-4 space-y-2">
-                  <li>通过 GitHub Issues 反馈问题</li>
-                  <li>发送邮件至项目维护者</li>
-                  <li>加入我们的社区讨论组</li>
+                  <li>
+                    <a
+                      href="https://github.com/hubporg/ghproxy-next/issues"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      通过 GitHub Issues 反馈问题
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/contact"
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      发送邮件至项目维护者
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://qm.qq.com/q/JWSV7CSGEs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      加入我们的社区讨论组
+                    </a>
+                  </li>
                 </ul>
               </div>
             </section>
