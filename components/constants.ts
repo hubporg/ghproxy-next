@@ -2,17 +2,6 @@
 // 常量定义
 // ============================================================
 
-import { servicesConfig } from "@/config/services";
-
-/**
- * 随机获取一个 GitHub API 基础 URL
- */
-export function getRandomGitHubApiBase(): string {
-  const { apiBases } = servicesConfig.github;
-  const randomIndex = Math.floor(Math.random() * apiBases.length);
-  return apiBases[randomIndex];
-}
-
 // 历史记录配置
 export const MAX_HISTORY_SIZE = 10;
 
