@@ -763,25 +763,20 @@ export default function MainContent({}: MainContentProps = {}) {
 
   /**
    * 尝试使用所有 API 接口获取 Releases（带回退机制）
+   * 优先使用 GitHub 官方 API（不参与洗牌），不可用时从代理节点池随机洗牌尝试；
+   * 失败的代理节点临时从池中剔除，减轻代理节点请求频率限制
    */
   async function fetchGitHubReleasesWithFallback(user: string, repo: string): Promise<Release[]> {
-    const apiBaseUrls = [...servicesConfig.github.apiBases]; // 复制数组
+    const OFFICIAL_API = 'https://api.github.com';
     const errors: { url: string; error: string; isRetryable: boolean }[] = [];
-    
-    // 打乱顺序，实现随机分配
-    for (let i = apiBaseUrls.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [apiBaseUrls[i], apiBaseUrls[j]] = [apiBaseUrls[j], apiBaseUrls[i]];
-    }
-    
-    // 依次尝试每个 API 接口
-    for (const apiBase of apiBaseUrls) {
+
+    // 尝试单个 API 接口；返回 null 表示可回退失败，抛出表示不可回退错误（404/无 Releases）
+    async function tryApi(apiBase: string): Promise<Release[] | null> {
       const apiUrl = `${apiBase}/repos/${user}/${repo}/releases`;
-      
       try {
         console.log(`尝试使用 API: ${apiBase}`);
         const response = await fetch(apiUrl);
-        
+
         if (!response.ok) {
           // 根据 HTTP 状态码判断是否支持回退
           if (response.status === 404) {
@@ -799,40 +794,55 @@ export default function MainContent({}: MainContentProps = {}) {
             throw error;
           }
         }
-        
+
         const data = await response.json();
-        
+
         if (!Array.isArray(data) || data.length === 0) {
           // 仓库无 Releases，不回退
           throw new Error('该仓库没有 Releases');
         }
-        
+
         console.log(`成功获取 Releases: ${apiBase}`);
         return data;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : '未知错误';
         const isRetryable = (error as any).isRetryable || isNetworkError(error);
-        
-        // 判断是否支持回退
-        if (isRetryable) {
-          // 支持回退的错误：网络错误、频率限制、其他HTTP错误
-          console.warn(`${apiBase} ${errorMessage}，切换到下一个接口`);
-          errors.push({ url: apiBase, error: errorMessage, isRetryable: true });
-          continue; // 继续尝试下一个
-        } else {
+
+        if (!isRetryable) {
           // 不支持回退的错误：404 仓库不存在、无Releases
           throw error;
         }
+        // 支持回退的错误：网络错误、频率限制、其他HTTP错误
+        console.warn(`${apiBase} ${errorMessage}，切换到下一个接口`);
+        errors.push({ url: apiBase, error: errorMessage, isRetryable: true });
+        return null;
       }
     }
-    
+
+    // 第一步：优先尝试 GitHub 官方 API
+    const officialResult = await tryApi(OFFICIAL_API);
+    if (officialResult) {
+      return officialResult;
+    }
+
+    // 第二步：官方不可用时，从代理节点池随机洗牌尝试，失败节点临时剔除
+    const proxyPool = servicesConfig.github.apiBases.filter(base => base !== OFFICIAL_API);
+    while (proxyPool.length > 0) {
+      const randomIndex = Math.floor(Math.random() * proxyPool.length);
+      const [apiBase] = proxyPool.splice(randomIndex, 1); // 尝试后临时剔除，避免重复命中失败节点
+      const result = await tryApi(apiBase);
+      if (result) {
+        return result;
+      }
+    }
+
     // 所有接口都失败，生成汇总错误信息
     console.error('所有 API 接口都失败:', errors);
-    
+
     // 统计错误类型
     const hasNetworkError = errors.some(e => e.error.includes('网络错误') || e.error.includes('Failed to fetch'));
     const hasRateLimit = errors.some(e => e.error.includes('频率限制'));
-    
+
     if (hasRateLimit && errors.length === servicesConfig.github.apiBases.length) {
       throw new Error('所有 GitHub API 接口都触发频率限制，请稍后再试');
     } else if (hasNetworkError) {
