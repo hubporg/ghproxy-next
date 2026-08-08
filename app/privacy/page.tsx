@@ -4,7 +4,7 @@ import { Shield } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "隐私政策 - GitHub Proxy",
+  title: "隐私政策",
   description: "GitHub Proxy 隐私政策，了解我们如何保护您的隐私和数据安全。",
 };
 
@@ -16,7 +16,6 @@ export default function PrivacyPolicy() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      
       <main className="flex-1 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* 页面标题 */}
@@ -270,18 +269,13 @@ export default function PrivacyPolicy() {
                 </p>
                 <ul className="list-disc list-inside ml-4 space-y-2">
                   <li>
-                    <a className="text-blue-600 dark:text-blue-400 hover:underline" href="https://github.com/hubporg/ghproxy-next/issues" target="_blank" rel="noreferrer">
-                      通过 GitHub Issues 提交问题
-                    </a>
-                  </li>
-                  <li>
                     <a className="text-blue-600 dark:text-blue-400 hover:underline" href="/contact">
-                      发送邮件至项目维护者
+                      发送电子邮件
                     </a>
                   </li>
                   <li>
-                    <a className="text-blue-600 dark:text-blue-400 hover:underline" href="https://qm.qq.com/q/JWSV7CSGEs" target="_blank" rel="noreferrer">
-                      加入我们的社区讨论
+                    <a className="text-blue-600 dark:text-blue-400 hover:underline" href="https://github.com/hubporg/ghproxy-next/issues" target="_blank" rel="noreferrer">
+                      通过 GitHub Issues 反馈问题
                     </a>
                   </li>
                 </ul>

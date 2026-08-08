@@ -4,7 +4,7 @@ import { Info } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "关于项目 - GitHub Proxy",
+  title: "关于项目",
   description: "了解 GitHub Proxy 项目的背景、功能和目标。",
 };
 
@@ -16,7 +16,6 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      
       <main className="flex-1 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* 页面标题 */}
@@ -25,7 +24,7 @@ export default function AboutPage() {
               <Info className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
             <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              关于项目
+              关于我们
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-400">
               让 GitHub 资源访问更加流畅

@@ -134,6 +134,44 @@ html.dark .hover\:bg-blue-700:hover {
   background-color: #006bb1 !important;
 }
 
+/* Header 导航按钮深色适配（slate 色系仅 Header 使用，零连锁） */
+html.dark .bg-slate-100 {
+  background-color: var(--card-bg) !important; /* #252526 卡片背景 */
+}
+
+html.dark .hover\:bg-slate-200:hover {
+  background-color: var(--btn-bg) !important; /* #333333 hover 背景 */
+}
+
+html.dark .border-slate-200 {
+  border-color: var(--card-border) !important; /* #333333 边框 */
+}
+
+html.dark .text-slate-900,
+html.dark .text-slate-600 {
+  color: var(--foreground) !important; /* #D4D4D4 正文 */
+}
+
+/* 联系页双卡片图标背景深色适配（限定作用域，避免影响 about 页等） */
+html.dark .contact-cards .bg-blue-50 {
+  background-color: rgba(0, 122, 204, 0.15) !important; /* developer_ide-400 15% */
+}
+
+html.dark .contact-cards .bg-purple-50 {
+  background-color: rgba(124, 58, 237, 0.15) !important; /* purple 15% */
+}
+
+/* 赞助页琥珀色图标背景深色适配（限定作用域，amber 仅 donate 页使用） */
+html.dark .donate-page .bg-amber-50,
+html.dark .donate-page .bg-amber-100 {
+  background-color: rgba(245, 158, 11, 0.15) !important; /* amber 15% */
+}
+
+/* 按钮深色 hover 背景（顺带修复 MainContent 等同场景） */
+html.dark .dark\:hover\:bg-gray-700:hover {
+  background-color: var(--btn-bg) !important; /* #333333 */
+}
+
 /* Waline 评论系统深色模式适配 - VS Code 风格 */
 html.dark .waline-container {
   --waline-white: #252526;

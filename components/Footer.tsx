@@ -51,20 +51,19 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Resources */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:flex-1 lg:grid-cols-3 lg:gap-x-2">
-            {/* 友情链接 */}
+            {/* Resources */}
             <div>
               <p className="font-semibold dark:text-white">资源</p>
               <div className="mt-6 space-y-4 text-sm">
                 <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="#">
                   Docker Proxy
                 </a>
-                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="https://kms.akams.cn" target="_blank">
-                  KMS Activation
-                </a>
                 <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="#">
                   Docker Relay Service
+                </a>
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="https://kms.akams.cn" target="_blank">
+                  KMS Activation
                 </a>
               </div>
             </div>
@@ -87,16 +86,19 @@ export default function Footer() {
 
             {/* Connect */}
             <div>
-              <p className="font-semibold dark:text-white">联系</p>
+              <p className="font-semibold dark:text-white">关于</p>
               <div className="mt-6 space-y-4 text-sm">
                 <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="/about">
-                  关于项目
+                  关于我们
                 </a>
                 <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="/contact">
                   联系我们
                 </a>
                 <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="https://github.com/hubporg/ghproxy-next/issues" target="_blank" rel="noreferrer">
-                  问题反馈
+                  反馈建议
+                </a>
+                <a className="block transition text-gray-500 dark:text-gray-400 hover:opacity-75" href="https://akams.cn/donate" target="_blank" rel="noreferrer">
+                  捐赠支持
                 </a>
               </div>
             </div>

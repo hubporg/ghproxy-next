@@ -33,14 +33,14 @@ export default function ReleasesListView({ releases, repoName, selectedDomain }:
     const date = new Date(dateString);
     // 转换为北京时间（UTC+8）
     const beijingTime = new Date(date.getTime() + BEIJING_TIMEZONE_OFFSET * 60 * 60 * 1000);
-    
+
     const year = beijingTime.getUTCFullYear();
     const month = String(beijingTime.getUTCMonth() + 1).padStart(2, '0');
     const day = String(beijingTime.getUTCDate()).padStart(2, '0');
     const hours = String(beijingTime.getUTCHours()).padStart(2, '0');
     const minutes = String(beijingTime.getUTCMinutes()).padStart(2, '0');
     const seconds = String(beijingTime.getUTCSeconds()).padStart(2, '0');
-    
+
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 

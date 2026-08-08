@@ -4,7 +4,7 @@ import { Scale } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "服务条款 - GitHub Proxy",
+  title: "服务条款",
   description: "GitHub Proxy 服务条款，了解我们的服务规则和用户责任。",
 };
 
@@ -160,52 +160,10 @@ export default function TermsOfService() {
               </div>
             </section>
 
-            {/* 联系方式 */}
-            <section>
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                7. 联系我们
-              </h2>
-              <div className="space-y-3 text-gray-700 dark:text-gray-300 leading-relaxed">
-                <p>
-                  如果您对本服务条款有任何疑问，请通过以下方式联系我们：
-                </p>
-                <ul className="list-disc list-inside ml-4 space-y-2">
-                  <li>
-                    <a
-                      href="https://github.com/hubporg/ghproxy-next/issues"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      通过 GitHub Issues 反馈问题
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/contact"
-                      className="text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      发送邮件至项目维护者
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="https://qm.qq.com/q/JWSV7CSGEs"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline"
-                    >
-                      加入我们的社区讨论组
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </section>
-
             {/* 法律适用 */}
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
-                8. 法律适用
+                7. 法律适用
               </h2>
               <div className="space-y-3 text-gray-700 dark:text-gray-300 leading-relaxed">
                 <p>
@@ -216,14 +174,35 @@ export default function TermsOfService() {
                 </p>
               </div>
             </section>
+
+            {/* 联系方式 */}
+            <section>
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                8. 联系我们
+              </h2>
+              <div className="space-y-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+                <p>
+                  如果您对本服务条款有任何疑问，请通过以下方式联系我们：
+                </p>
+                <ul className="list-disc list-inside ml-4 space-y-2">
+                  <li>
+                    <a className="text-blue-600 dark:text-blue-400 hover:underline" href="/contact">
+                      发送电子邮件
+                    </a>
+                  </li>
+                  <li>
+                    <a className="text-blue-600 dark:text-blue-400 hover:underline" href="https://github.com/hubporg/ghproxy-next/issues" target="_blank" rel="noreferrer">
+                      通过 GitHub Issues 反馈问题
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </section>
           </div>
 
           {/* 返回首页链接 */}
           <div className="text-center mt-8">
-            <a
-              href="/"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
-            >
+            <a className="text-blue-600 dark:text-blue-400 hover:underline" href="/">
               返回首页
             </a>
           </div>
