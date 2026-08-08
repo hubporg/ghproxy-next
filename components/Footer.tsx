@@ -106,11 +106,11 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-            <p> © 2026 <a style={{color: '#155DFC', textDecoration: 'none'}} href="https://www.hubp.org" target="_blank">hubp.org</a>. All rights reserved.</p>
+            <p> © 2026 <a className="dark:text-blue-400" style={{color: '#155DFC', textDecoration: 'none'}} href="https://www.hubp.org" target="_blank">hubp.org</a>. All rights reserved.</p>
             <div className="flex flex-col sm:flex-row items-center gap-2">
-              <a className="hover:text-gray-900 dark:hover:text-white transition-colors" href="https://icp.felicity.land/?keyword=20251111" target="_blank" rel="noreferrer">幸ICP备20251111号</a>
+              <a className="hover:text-gray-900 focus:text-gray-900 dark:hover:text-white dark:focus:text-white transition-colors" href="https://icp.felicity.land/?keyword=20251111" target="_blank" rel="noreferrer">幸ICP备20251111号</a>
               <span className="hidden sm:inline">|</span>
-              <a className="hover:text-gray-900 dark:hover:text-white transition-colors" href="https://icp.gov.moe/?keyword=20251215" target="_blank" rel="noreferrer">萌ICP备20251215号</a>
+              <a className="hover:text-gray-900 focus:text-gray-900 dark:hover:text-white dark:focus:text-white transition-colors" href="https://icp.gov.moe/?keyword=20251215" target="_blank" rel="noreferrer">萌ICP备20251215号</a>
             </div>
           </div>
         </div>

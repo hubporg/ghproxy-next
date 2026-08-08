@@ -17,6 +17,7 @@ export const MAX_DROPDOWN_HEIGHT = MAX_VISIBLE_NODES * NODE_ITEM_HEIGHT; // 440p
 export const THEME_STORAGE_KEY = 'theme';
 export const THEME_DARK = 'dark';
 export const THEME_LIGHT = 'light';
+export const THEME_SYSTEM = 'system';
 
 // 文件大小单位
 export const FILE_SIZE_UNITS = ['B', 'KB', 'MB', 'GB'];

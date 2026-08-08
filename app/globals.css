@@ -3,6 +3,13 @@
 @theme {
   --color-background: #ffffff;
   --color-foreground: #171717;
+
+  /* VS Code 风格深色色板 */
+  --color-developer_ide-50: #1E1E1E;
+  --color-developer_ide-200: #252526;
+  --color-developer_ide-300: #333333;
+  --color-developer_ide-400: #007ACC;
+  --color-developer_ide-500: #D4D4D4;
 }
 
 :root {
@@ -17,14 +24,14 @@
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  /* 深色模式下的卡片背景色 - GitHub 风格 */
-  --card-bg: #161b22;
-  --card-bg-secondary: #0d1117;
-  --card-border: #30363d;
-  --btn-bg: #21262d;
-  --btn-border: #30363d;
+  --background: #1E1E1E;
+  --foreground: #D4D4D4;
+  /* 深色模式下的卡片背景色 - VS Code 风格 */
+  --card-bg: #252526;
+  --card-bg-secondary: #1E1E1E;
+  --card-border: #333333;
+  --btn-bg: #333333;
+  --btn-border: #333333;
 }
 
 body {
@@ -82,19 +89,19 @@ html.dark .border-gray-300 {
 
 /* 文字颜色覆盖 - 提高深色模式下的可读性 */
 html.dark .text-gray-700 {
-  color: rgb(229 231 235) !important; /* gray-200 */
+  color: #D4D4D4 !important; /* developer_ide-500 */
 }
 
 html.dark .text-gray-600 {
-  color: rgb(229 231 235) !important; /* gray-200 */
+  color: #D4D4D4 !important; /* developer_ide-500 */
 }
 
 html.dark .text-gray-300 {
-  color: rgb(243 244 246) !important; /* gray-100 */
+  color: #D4D4D4 !important; /* developer_ide-500 */
 }
 
 html.dark .dark\:text-gray-200 {
-  color: rgb(243 244 246) !important; /* gray-100 */
+  color: #D4D4D4 !important; /* developer_ide-500 */
 }
 
 html.dark .dark\:text-gray-100 {
@@ -105,18 +112,40 @@ html.dark .dark\:text-white {
   color: rgb(255 255 255) !important; /* white */
 }
 
-/* Waline 评论系统深色模式适配 - GitHub 风格 */
+/* 备案号等链接：深色模式下 hover/focus 强制白色（dark: 变体为媒体查询驱动，需类覆盖兜底） */
+html.dark .dark\:hover\:text-white:hover,
+html.dark .dark\:focus\:text-white:focus {
+  color: rgb(255 255 255) !important; /* white */
+}
+
+/* 强调色统一为 VS Code 标志蓝（仅文字/图标/链接） */
+html.dark .text-blue-600,
+html.dark .dark\:text-blue-400,
+html.dark .dark\:text-blue-500 {
+  color: #007ACC !important; /* developer_ide-400 */
+}
+
+/* 主按钮背景同步 VS Code 标志蓝（hover 加深） */
+html.dark .bg-blue-600 {
+  background-color: #007ACC !important; /* developer_ide-400 */
+}
+
+html.dark .hover\:bg-blue-700:hover {
+  background-color: #006bb1 !important;
+}
+
+/* Waline 评论系统深色模式适配 - VS Code 风格 */
 html.dark .waline-container {
-  --waline-white: #161b22;
-  --waline-light-grey: #21262d;
-  --waline-dark-grey: #8b949e;
-  --waline-color: #c9d1d9;
-  --waline-bgcolor: #161b22;
-  --waline-bgcolor-light: #0d1117;
-  --waline-border-color: #30363d;
-  --waline-disable-bgcolor: #21262d;
-  --waline-disable-color: #484f58;
-  --waline-code-bgcolor: #0d1117;
+  --waline-white: #252526;
+  --waline-light-grey: #333333;
+  --waline-dark-grey: #6a737d;
+  --waline-color: #D4D4D4;
+  --waline-bgcolor: #252526;
+  --waline-bgcolor-light: #1E1E1E;
+  --waline-border-color: #333333;
+  --waline-disable-bgcolor: #333333;
+  --waline-disable-color: #6a737d;
+  --waline-code-bgcolor: #1E1E1E;
 }
 
 /* Waline 评论系统通用样式 */

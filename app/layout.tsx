@@ -65,6 +65,12 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning className={outfit.variable}>
       <body className="antialiased">
+        {/* 主题防闪屏：在 hydration 前根据 localStorage 应用 .dark 类 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme')||'system';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`,
+          }}
+        />
         {/* 结构化数据 (JSON-LD) */}
         <script
           type="application/ld+json"

@@ -1,65 +1,104 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { THEME_STORAGE_KEY, THEME_DARK, THEME_LIGHT } from './constants';
+import { useEffect, useRef, useState } from "react";
+import { THEME_STORAGE_KEY, THEME_DARK, THEME_LIGHT, THEME_SYSTEM } from './constants';
 import { Icon } from "@iconify/react";
 import { siteConfig } from "@/config/site";
+
+type Theme = 'light' | 'dark' | 'system';
+
+const THEME_OPTIONS: { value: Theme; label: string; icon: string }[] = [
+  { value: 'light', label: '浅色', icon: 'solar:sun-bold' },
+  { value: 'dark', label: '深色', icon: 'solar:moon-stars-bold' },
+  { value: 'system', label: '跟随系统', icon: 'solar:monitor-bold' },
+];
 
 export default function Header() {
   // ============================================================
   // State Declarations
   // ============================================================
+  const [theme, setThemeState] = useState<Theme>('system');
   const [isDark, setIsDark] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   // ============================================================
   // 主题管理相关
   // ============================================================
   /**
-   * 初始化主题设置
-   * 优先使用 localStorage 中保存的主题，否则使用系统偏好
+   * 判断指定主题在当前系统偏好下是否应启用深色
+   */
+  function isDarkActive(t: Theme): boolean {
+    if (t === 'dark') return true;
+    if (t === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  /**
+   * 应用主题到 documentElement 并同步 isDark 状态
+   */
+  function applyTheme(t: Theme) {
+    const dark = isDarkActive(t);
+    document.documentElement.classList.toggle('dark', dark);
+    setIsDark(dark);
+  }
+
+  /**
+   * 初始化主题：读取 localStorage，无值默认 system
    */
   useEffect(() => {
-    // 检查 localStorage 中的主题设置
-    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-    
-    if (savedTheme) {
-      // 如果有保存的主题，使用保存的主题
-      const isDarkTheme = savedTheme === THEME_DARK;
-      setIsDark(isDarkTheme);
-      if (isDarkTheme) {
-        document.documentElement.classList.add(THEME_DARK);
-      } else {
-        document.documentElement.classList.remove(THEME_DARK);
-      }
-    } else {
-      // 如果没有保存的主题，检查系统偏好
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDark(prefersDark);
-      if (prefersDark) {
-        document.documentElement.classList.add(THEME_DARK);
-        localStorage.setItem(THEME_STORAGE_KEY, THEME_DARK);
-      } else {
-        document.documentElement.classList.remove(THEME_DARK);
-        localStorage.setItem(THEME_STORAGE_KEY, THEME_LIGHT);
-      }
-    }
+    const saved = localStorage.getItem(THEME_STORAGE_KEY);
+    const initial: Theme =
+      saved === THEME_DARK || saved === THEME_LIGHT || saved === THEME_SYSTEM ? (saved as Theme) : THEME_SYSTEM;
+    setThemeState(initial);
+    applyTheme(initial);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /**
+   * 跟随系统模式下，监听系统主题变化实时切换
+   */
+  useEffect(() => {
+    if (theme !== THEME_SYSTEM) return;
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = () => applyTheme(THEME_SYSTEM);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme]);
+
+  /**
+   * 下拉打开时：点击外部 / Esc 关闭
+   */
+  useEffect(() => {
+    if (!menuOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [menuOpen]);
 
   /**
    * 切换主题
    */
-  function toggleTheme() {
-    const newIsDark = !isDark;
-    setIsDark(newIsDark);
-    
-    if (newIsDark) {
-      document.documentElement.classList.add(THEME_DARK);
-      localStorage.setItem(THEME_STORAGE_KEY, THEME_DARK);
-    } else {
-      document.documentElement.classList.remove(THEME_DARK);
-      localStorage.setItem(THEME_STORAGE_KEY, THEME_LIGHT);
-    }
+  function setTheme(t: Theme) {
+    setThemeState(t);
+    localStorage.setItem(THEME_STORAGE_KEY, t);
+    applyTheme(t);
+    setMenuOpen(false);
   }
+
+  const currentOption = THEME_OPTIONS.find(o => o.value === theme) ?? THEME_OPTIONS[2];
 
   // ============================================================
   // JSX 渲染
@@ -97,12 +136,43 @@ export default function Header() {
               <Icon className={`w-6 h-6 ${isDark ? "text-gray-100" : "text-gray-600"}`} icon="solar:chat-square-like-bold"/>
             </a>
 
-            {/* Theme Toggle */}
-            <div className="w-6 h-6 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity" title={isDark ? "切换到日间模式" : "切换到暗黑模式"} onClick={toggleTheme}>
-              {isDark ? (
-                <Icon icon="solar:sun-bold" className="w-6 h-6 text-gray-100" />
-              ) : (
-                <Icon icon="solar:moon-stars-bold" className="w-6 h-6 text-gray-600" />
+            {/* Theme Switcher */}
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                onClick={() => setMenuOpen(o => !o)}
+                className="w-6 h-6 flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+                title="切换主题"
+                aria-haspopup="menu"
+                aria-expanded={menuOpen}
+                aria-label="切换主题"
+              >
+                <Icon icon={currentOption.icon} className={`w-6 h-6 ${isDark ? "text-gray-100" : "text-gray-600"}`} />
+              </button>
+              {menuOpen && (
+                <div
+                  role="menu"
+                  className="absolute right-0 mt-2 w-36 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden z-50"
+                >
+                  {THEME_OPTIONS.map(opt => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={theme === opt.value}
+                      onClick={() => setTheme(opt.value)}
+                      className={`w-full flex items-center gap-2 px-3 py-2 text-sm text-left transition-colors ${
+                        theme === opt.value
+                          ? 'text-developer_ide-400 bg-gray-50 dark:bg-gray-700'
+                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      }`}
+                    >
+                      <Icon icon={opt.icon} className="w-4 h-4 flex-shrink-0" />
+                      <span className="flex-1">{opt.label}</span>
+                      {theme === opt.value && <Icon icon="solar:check-bold" className="w-4 h-4 flex-shrink-0" />}
+                    </button>
+                  ))}
+                </div>
               )}
             </div>
           </div>
