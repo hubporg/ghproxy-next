@@ -10,7 +10,6 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "ghfile.geekertao.top" },
   { label: "contribute", value: "ghproxy.net" },
   { label: "contribute", value: "gh-proxy.com" },
-  { label: "contribute", value: "gh-proxy.net" },
   { label: "contribute", value: "cdn.gh-proxy.com" },
   { label: "contribute", value: "github.dpik.top" },
   { label: "contribute", value: "j.1lin.dpdns.org" },
