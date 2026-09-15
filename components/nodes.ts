@@ -84,4 +84,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "gh.qfmc0721.cc.cd" },
   { label: "contribute", value: "github-cf.947563.xyz" },
   { label: "contribute", value: "github.gohj99.site" },
+  { label: "contribute", value: "githubproxy.gohj99.site" },
 ];
