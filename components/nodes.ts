@@ -54,7 +54,6 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "search", value: "ghproxy.1888866.xyz" },
   { label: "search", value: "ghp.arslantu.xyz" },
   { label: "search", value: "github.ednovas.xyz" },
-  { label: "search", value: "ghproxy.imciel.com" },
   { label: "search", value: "ghproxy.cxkpro.top" },
   { label: "search", value: "github.xxlab.tech" },
   { label: "search", value: "gh.idayer.com" },
