@@ -10,12 +10,12 @@ export const siteConfig = {
   ogImage: "https://cdn.akams.cn/img/260514162200257-c72107d260d76574.webp",
   links: {
     github: "https://github.com/oopsunix/ghproxy-next",
-    donate: "https://akams.cn/donate",
+    donate: "https://akams.cn/support",
     contact: "http://github.akams.cn/contact",
   },
   author: {
-    name: "oopsunix",
-    link: "https://github.com/oopsunix",
+    name: "hubp",
+    link: "https://github.com/hubporg",
   },
 };
 
