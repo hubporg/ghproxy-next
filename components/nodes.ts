@@ -28,7 +28,6 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "gitproxy.127731.xyz" },
   { label: "contribute", value: "gh.inkchills.cn" },
   { label: "contribute", value: "gh.catmak.name" },
-  { label: "contribute", value: "gh.b52m.cn" },
   { label: "contribute", value: "down.mxw.xx.kg" },
   { label: "contribute", value: "down.mxw.qzz.io" },
   { label: "contribute", value: "github.mxw.qzz.io" },
