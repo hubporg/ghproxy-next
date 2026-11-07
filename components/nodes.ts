@@ -86,4 +86,5 @@ export const PROXY_NODES: Partial<DomainNode>[] = [
   { label: "contribute", value: "ghproxy.icu" },
   { label: "contribute", value: "ghgo.de5.net" },
   { label: "contribute", value: "gh.beimengvv.xyz" },
+  { label: "contribute", value: "eogh.719831.xyz" },
 ];
